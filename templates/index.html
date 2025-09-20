@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Tableau de bord{% endblock %}
+{% block content %}
+  <h1>Tableau de bord</h1>
+  <div class="grid">
+    <div class="card">
+      <h2>Campagnes</h2>
+      <p class="muted">Nombre total de campagnes enregistrées</p>
+      <p style="font-size:2.5rem; margin:0; font-weight:700;">{{ campaign_count }}</p>
+      <a class="button-link" href="{{ url_for('campaigns_view') }}">Gérer les campagnes</a>
+    </div>
+    <div class="card">
+      <h2>Évènements</h2>
+      <p class="muted">Ouvertures, clics et téléchargements enregistrés</p>
+      <p style="font-size:2.5rem; margin:0; font-weight:700;">{{ events_count }}</p>
+      <a class="button-link" href="{{ url_for('visualize') }}">Voir le journal</a>
+    </div>
+    <div class="card">
+      <h2>Identifiants capturés</h2>
+      <p class="muted">Soumissions de formulaires interceptées</p>
+      <p style="font-size:2.5rem; margin:0; font-weight:700;">{{ credentials_count }}</p>
+      <a class="button-link" href="{{ url_for('visualize') }}#credentials">Analyser</a>
+    </div>
+  </div>
+
+  <section class="card">
+    <h2>Envoyer un e-mail de test immédiat</h2>
+    <p class="muted">Utilisez ce formulaire pour envoyer un mail de sensibilisation unique à un collaborateur.</p>
+    <form method="post" action="{{ url_for('sendphishing') }}">
+      <label for="email">Adresse e-mail du destinataire</label>
+      <input type="email" id="email" name="email" placeholder="prenom.nom@entreprise.fr" required />
+      <div style="margin-top:1rem;">
+        <button type="submit">Envoyer le message</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>Campagnes récentes</h2>
+    {% if campaigns %}
+      <ul style="list-style:none; padding:0; margin:0; display:grid; gap:1rem;">
+        {% for campaign in campaigns %}
+          <li style="border:1px solid #e2e8f0; border-radius:0.75rem; padding:1rem; background:#f8fafc;">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap;">
+              <div>
+                <strong>{{ campaign.name }}</strong>
+                <div class="muted">Créée le {{ campaign.created_at|format_timestamp }}</div>
+                {% if campaign.description %}
+                  <div style="margin-top:0.3rem;">{{ campaign.description }}</div>
+                {% endif %}
+              </div>
+              <div style="text-align:right;">
+                <div class="muted">{{ campaign.recipients|length }} destinataire(s)</div>
+                <div class="muted">Dernier envoi : {{ campaign.last_sent_at|format_timestamp }}</div>
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+      <div style="margin-top:1rem;">
+        <a class="button-link" href="{{ url_for('campaigns_view') }}">Voir toutes les campagnes</a>
+      </div>
+    {% else %}
+      <p class="muted">Enregistrez votre première campagne pour préparer un scénario de sensibilisation.</p>
+      <a class="button-link" href="{{ url_for('campaigns_view') }}">Créer une campagne</a>
+    {% endif %}
+  </section>
+{% endblock %}

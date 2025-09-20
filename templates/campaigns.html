@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Campagnes{% endblock %}
+{% block content %}
+  <h1>Gestion des campagnes</h1>
+  <section class="card">
+    <h2>Créer une nouvelle campagne</h2>
+    <p class="muted">Définissez un nom, une description et les destinataires ciblés. Les adresses peuvent être séparées par des virgules, des points-virgules ou des retours à la ligne.</p>
+    <form method="post" action="{{ url_for('campaigns_view') }}">
+      <label for="name">Nom de la campagne</label>
+      <input type="text" id="name" name="name" placeholder="Campagne trimestrielle RH" required />
+
+      <label for="description" style="margin-top:1rem;">Description (optionnel)</label>
+      <textarea id="description" name="description" placeholder="Contexte ou objectif de la campagne"></textarea>
+
+      <label for="recipients" style="margin-top:1rem;">Destinataires</label>
+      <textarea id="recipients" name="recipients" placeholder="prenom.nom@entreprise.fr, autre.personne@entreprise.fr" required></textarea>
+      <p class="muted" style="margin-top:0.5rem;">Utilisez une adresse par ligne pour plus de lisibilité.</p>
+
+      <div style="margin-top:1rem;">
+        <button type="submit">Enregistrer la campagne</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card" style="margin-top:2rem;">
+    <h2>Campagnes enregistrées</h2>
+    {% if campaigns %}
+      <div style="overflow-x:auto;">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Description</th>
+              <th>Destinataires</th>
+              <th>Créée le</th>
+              <th>Dernier envoi</th>
+              <th>Total envoyés</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for campaign in campaigns %}
+              <tr>
+                <td style="font-weight:600;">{{ campaign.name }}</td>
+                <td>{{ campaign.description or '—' }}</td>
+                <td>
+                  <details>
+                    <summary>{{ campaign.recipients|length }} destinataire(s)</summary>
+                    <ul style="margin:0.5rem 0 0; padding-left:1.2rem;">
+                      {% for address in campaign.recipients %}
+                        <li>{{ address }}</li>
+                      {% endfor %}
+                    </ul>
+                  </details>
+                </td>
+                <td>{{ campaign.created_at|format_timestamp }}</td>
+                <td>{{ campaign.last_sent_at|format_timestamp }}</td>
+                <td>{{ campaign.total_emails_sent }}</td>
+                <td>
+                  <form method="post" action="{{ url_for('launch_campaign', campaign_id=campaign.id) }}">
+                    <button type="submit">Lancer</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="muted">Aucune campagne enregistrée pour le moment. Créez votre première campagne via le formulaire ci-dessus.</p>
+    {% endif %}
+  </section>
+{% endblock %}
