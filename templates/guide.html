@@ -1,47 +1,126 @@
 {% extends "base.html" %}
-{% block title %}Guide d'utilisation{% endblock %}
+
 {% block content %}
-  <h1>Guide d'utilisation</h1>
-  <section class="card">
-    <h2>1. Préparation de la plateforme</h2>
-    <ul>
-      <li>Configurez les variables d'environnement <code>PHISHING_FROM_EMAIL</code> et <code>PHISHING_FROM_PASSWORD</code> pour utiliser les identifiants de votre compte d'envoi.</li>
-      <li>Vérifiez l'accessibilité du serveur Flask depuis le réseau cible. Les liens générés sont absolus et s'appuient sur l'URL publique du serveur.</li>
-      <li>Personnalisez le fichier d'attachement <code>pdf.exe</code> si vous souhaitez présenter un fichier différent.</li>
-    </ul>
-  </section>
+<div class="container py-4">
+  <h1 class="mb-4">📖 Guide d’installation et d’utilisation – Projet Phishing Demo</h1>
 
-  <section class="card">
-    <h2>2. Création d'une campagne</h2>
-    <ol>
-      <li>Ouvrez l'onglet « Campagnes » via la barre de navigation.</li>
-      <li>Renseignez un nom explicite, une description et la liste des destinataires souhaités.</li>
-      <li>Validez le formulaire : la campagne est mémorisée et réutilisable à tout moment.</li>
-      <li>Depuis le tableau des campagnes, cliquez sur « Lancer » pour envoyer le mail à l'ensemble des destinataires.</li>
-    </ol>
-    <p class="muted">Chaque destinataire reçoit un identifiant de suivi unique permettant de corréler toutes les actions (ouverture, clic, téléchargement, soumission de formulaire).</p>
-  </section>
+  <h2>🚀 Présentation</h2>
+  <p>Ce projet est une application <strong>Flask</strong> qui simule une campagne de phishing. Il permet :</p>
+  <ul>
+    <li>📧 d’envoyer des emails piégés (faux Slack par défaut)</li>
+    <li>📊 de collecter les événements (<em>mails ouverts, liens cliqués, pièces jointes téléchargées</em>)</li>
+    <li>🔐 de capter les identifiants saisis dans une fausse page de connexion</li>
+    <li>🖥️ de visualiser tous les résultats dans une interface simple</li>
+  </ul>
 
-  <section class="card">
-    <h2>3. Envoi ponctuel</h2>
-    <p>Le tableau de bord offre un formulaire rapide pour envoyer un mail de test à un destinataire unique sans créer de campagne.</p>
-  </section>
+  <div class="alert alert-warning">
+    ⚠️ Ce projet est uniquement destiné à un usage pédagogique ou dans un cadre légal (tests de sécurité, sensibilisation).
+  </div>
 
-  <section class="card">
-    <h2>4. Suivi et journalisation</h2>
-    <ul>
-      <li>La page « Journal » présente l'historique des évènements : mails ouverts, clics sur la page de connexion factice, téléchargements de l'attachement et envois d'identifiants.</li>
-      <li>Les identifiants saisis sont stockés dans un fichier CSV dédié. Veillez à sécuriser l'accès au dossier <code>data/</code>.</li>
-      <li>Chaque enregistrement indique l'adresse e-mail et la campagne d'origine pour faciliter vos analyses.</li>
-    </ul>
-  </section>
+  <h2>🛠️ Installation</h2>
 
-  <section class="card">
-    <h2>5. Bonnes pratiques</h2>
-    <ul>
-      <li>Informez les collaborateurs concernés qu'il s'agit d'un exercice de sensibilisation et partagez les enseignements obtenus.</li>
-      <li>Supprimez régulièrement les données collectées et anonymisez-les si vous devez les réutiliser à des fins de formation.</li>
-      <li>Adaptez le contenu du mail et de la page d'atterrissage pour correspondre à vos scénarios internes.</li>
-    </ul>
-  </section>
+  <h3>1. Prérequis</h3>
+  <ul>
+    <li>Python <code>3.10+</code></li>
+    <li><code>pip</code> (gestionnaire de packages Python)</li>
+    <li>Un compte email SMTP valide <br>
+        👉 ou lancer <code>docker-compose up</code> avec <strong>MailHog</strong> pour tester en local</li>
+  </ul>
+
+  <h3>2. Récupération du projet</h3>
+  <pre><code>git clone https://github.com/Luczerty/phisingproject
+cd phisingproject
+</code></pre>
+
+  <h3>3. Création de l’environnement virtuel</h3>
+  <pre><code>python3 -m venv venv
+source venv/bin/activate   # Linux/macOS
+venv\Scripts\activate      # Windows
+</code></pre>
+
+  <h3>4. Installation des dépendances</h3>
+  <pre><code>pip install -r requirements.txt
+</code></pre>
+
+  <h3>5. Configuration</h3>
+  <p>Ouvrir <code>app.py</code> et adapter les variables SMTP :</p>
+  <pre><code>SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+FROM_EMAIL = "exemple@gmail.com"
+FROM_PASSWORD = "motdepasse-ou-token"
+</code></pre>
+
+  <h3>6. Lancer l’application</h3>
+  <pre><code>python app.py
+</code></pre>
+  <p>Puis ouvrir 👉 <a href="http://localhost:3000" target="_blank">http://localhost:3000</a> (ou votre adresse IP privée).</p>
+
+  <hr />
+
+  <h2>📷 Interface utilisateur</h2>
+  <ul>
+    <li><strong>Accueil (<code>/</code>)</strong> → résumé des campagnes, événements et identifiants capturés. Envoi rapide d’un mail.</li>
+    <li><strong>Création d’une campagne (<code>/campaigns</code>)</strong> → ajout de destinataires + description.</li>
+    <li><strong>Exemple d’email reçu</strong> → faux mail Slack (modifiable).</li>
+    <li><strong>Page de connexion factice</strong> → saisie email + mot de passe, sauvegardés dans <code>data/credentials.csv</code>.</li>
+    <li><strong>Visualisation (<code>/visualize</code>)</strong> → affichage des événements et identifiants capturés.</li>
+  </ul>
+
+  <hr />
+
+  <h2>📂 Structure du projet</h2>
+
+  <h3>📑 Fichiers de données</h3>
+  <ul>
+    <li><code>data/events.csv</code> → événements (mails ouverts, clics, téléchargements…)</li>
+    <li><code>data/credentials.csv</code> → identifiants capturés</li>
+    <li><code>data/campaigns.json</code> → configuration des campagnes</li>
+    <li><code>data/hash_mapping.json</code> → correspondance hash ↔ email</li>
+  </ul>
+
+  <hr />
+
+  <h2>📖 Documentation – Personnalisation</h2>
+
+  <h3>Changer la Landing Page</h3>
+  <p>La landing page est affichée lorsqu’un utilisateur clique sur le lien reçu par mail.</p>
+  <p>Par défaut, le projet utilise :</p>
+  <pre><code>return render_template("landing.html", hash_id=hash_id)
+</code></pre>
+  <p>Pour utiliser une autre landing page :</p>
+  <pre><code>return render_template("landing_microsoft.html", hash_id=hash_id)
+</code></pre>
+  <p>👉 Exemples de variantes possibles :</p>
+  <pre><code>landing_slack.html      → imitation Slack
+landing_microsoft.html  → imitation Microsoft
+landing_google.html     → imitation Google
+</code></pre>
+  <p><strong>Astuce :</strong> conserve la même structure et change seulement le design (logo, couleurs, textes).</p>
+
+  <h3>Changer le Mail envoyé</h3>
+  <p>Le contenu du mail est défini dans la fonction <code>send_phishing_email</code>.</p>
+
+  <p><strong>Sujet du mail</strong></p>
+  <pre><code>msg["Subject"] = "🔒 Test de sensibilisation interne"
+</code></pre>
+  <p>➡️ Exemple modifié :</p>
+  <pre><code>msg["Subject"] = "⚠️ Connexion Microsoft requise"
+</code></pre>
+
+  <p><strong>Template du mail</strong></p>
+  <pre><code>templates/emails/phishing_email.html</code></pre>
+  <p>👉 Tu peux créer d’autres variantes :</p>
+  <pre><code>emails/slack_email.html → mail Slack
+emails/ms_email.html    → mail Microsoft
+</code></pre>
+
+  <hr />
+
+  <h2>✅ Résumé rapide</h2>
+  <ul>
+    <li>Modifier <code>templates/landing.html</code> → pour changer la landing page</li>
+    <li>Modifier <code>templates/emails/phishing_email.html</code> → pour changer le mail</li>
+    <li>Modifier <code>msg["Subject"]</code> → pour changer l’objet du mail</li>
+  </ul>
+</div>
 {% endblock %}
