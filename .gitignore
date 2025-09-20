@@ -1,7 +1,3 @@
 __pycache__/
 *.pyc
-.env
-.env.*
-*.db
-data/*
 !data/.gitkeep
