@@ -22,8 +22,8 @@ from flask import (
 
 SMTP_SERVER = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
-FROM_EMAIL = os.environ.get("PHISHING_FROM_EMAIL", "ztaboka@gmail.com")
-FROM_PASSWORD = os.environ.get("PHISHING_FROM_PASSWORD", "vdzyfojrkbqshagz")
+FROM_EMAIL = os.environ.get("PHISHING_FROM_EMAIL", "")
+FROM_PASSWORD = os.environ.get("PHISHING_FROM_PASSWORD", "")
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
